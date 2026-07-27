@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrativo | Amanhecer Multimarcas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS Geral da Loja -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ESTILOS EXCLUSIVOS DA PÁGINA DE LOGIN -->
+    <style>
+        /* Container principal que ocupa a tela toda e centraliza o conteúdo */
+        .login-main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Card flutuante estilo Vidro Fosco (Glassmorphism) */
+        .login-card {
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 50px 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-header {
+            margin-bottom: 35px;
+        }
+
+        .login-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Estilização dos Inputs */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-white);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-login {
+            margin-top: 15px;
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .error-message {
+            color: #ff4a4a;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none;
+            background: rgba(255, 74, 74, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 74, 74, 0.3);
+        }
+
+        /* Sutil brilho de fundo atrás do card */
+        .glow-bg {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-darker">
+
+    <!-- Header - Mantido limpo para o Efeito Ilha, sem botões extras para evitar distração -->
+    <header id="header">
+        <div class="container navbar" style="justify-content: center;">
+            <a href="index.html" class="logo">Amanhecer<span>.</span></a>
+        </div>
+    </header>
+
+    <!-- Seção Principal de Login -->
+    <main class="login-main">
+        <div class="glow-bg"></div>
+        
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Acesso Restrito</h2>
+                <p>Painel Administrativo da Loja</p>
+            </div>
+            
+            <form id="form-login">
+                <div class="input-group">
+                    <label for="usuario">Usuário</label>
+                    <input type="text" id="usuario" placeholder="Digite seu usuário" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-gold btn-login">ENTRAR NO PAINEL</button>
+                
+                <div id="msg-erro" class="error-message">
+                    Usuário ou senha incorretos.
+                </div>
+            </form>
+        </div>
+    </main>
+
+<!-- Rodapé Minimalista -->
+    <footer class="footer" style="padding: 20px 0; border-top: 1px solid var(--border); background: #0a0a0a;">
+        <div class="footer-bottom container" style="display: flex; justify-content: center; gap: 20px;">
+            <p>&copy; 2026 Amanhecer Multimarcas.</p>
+            <p class="dev-credits">Desenvolvido por <a href="https://nivotech.com.br" target="_blank" rel="noopener noreferrer" style="color: var(--gold); font-weight: 600; text-decoration: none; transition: 0.3s;">NivoTech</a></p>
+        </div>
+    </footer>
+    <!-- Script de Autenticação Fictícia -->
+    <script>
+        document.getElementById('form-login').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que a página recarregue
+            
+            const usuarioVal = document.getElementById('usuario').value;
+            const senhaVal = document.getElementById('senha').value;
+            const msgErro = document.getElementById('msg-erro');
+            
+            // SIMULAÇÃO DE LOGIN: Usuário = admin | Senha = 1234
+            if (usuarioVal === 'admin' && senhaVal === '1234') {
+                msgErro.style.display = 'none';
+                
+                // Muda o texto do botão para dar um feedback visual legal
+                const btn = document.querySelector('.btn-login');
+                btn.textContent = 'AUTENTICANDO...';
+                btn.style.opacity = '0.7';
+                
+                // Redireciona para o painel admin após 1 segundo
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 1000);
+            } else {
+                // Exibe a mensagem de erro
+                msgErro.style.display = 'block';
+                
+                // Dá um pequeno efeito de tremor (shake) visual no card se errar
+                const card = document.querySelector('.login-card');
+                card.style.transform = 'translateX(-10px)';
+                setTimeout(() => card.style.transform = 'translateX(10px)', 100);
+                setTimeout(() => card.style.transform = 'translateX(-10px)', 200);
+                setTimeout(() => card.style.transform = 'translateX(0)', 300);
+            }
+        });
+    </script>
+    
+    <!-- Script Principal (Mantém o efeito da ilha no header) -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porsche 911 Carrera S | Amanhecer Multimarcas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS Geral -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ESTILOS EXCLUSIVOS DA PÁGINA DE DETALHES -->
+    <style>
+        .car-details-section {
+            padding: 30px 20px 80px;
+        }
+
+        /* Galeria Ajustada */
+        .car-gallery {
+            max-width: 850px;
+            margin: 0 auto 40px;
+        }
+        .main-image-box {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: #151515;
+        }
+        .main-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .thumbnail-list {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .thumb {
+            width: 130px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        .thumb:hover { opacity: 0.8; }
+        .thumb.active {
+            opacity: 1;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Grid de Informações */
+        .car-info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 15px;
+        }
+
+        .car-title-large {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .car-price-large {
+            font-size: 2.2rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 35px;
+        }
+
+        .topic-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Opcionais com Badge ✓ */
+        .optionals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .optional-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        .optional-card:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.03);
+        }
+        .optional-card span {
+            font-size: 0.95rem;
+            color: var(--text-white);
+        }
+
+        .check-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* SISTEMA "VER MAIS / VER MENOS" DA DESCRIÇÃO */
+        .desc-wrapper {
+            position: relative;
+            max-height: 80px; /* Limita a altura inicial (~3 linhas) */
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .desc-wrapper.expanded {
+            max-height: 1000px; /* Expande suavemente para exibir todo o conteúdo */
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .desc-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+            margin: 0;
+        }
+
+        /* Efeito de degradê para suavizar o corte do texto */
+        .fade-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--bg-darker, #0a0a0a));
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .desc-wrapper.expanded .fade-overlay {
+            opacity: 0;
+        }
+
+        .btn-read-more {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 8px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            margin-bottom: 40px;
+        }
+
+        .btn-read-more:hover {
+            color: #fff;
+        }
+
+        /* Ficha Técnica Lateral */
+        .specs-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 110px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .specs-card h3 {
+            margin-bottom: 25px;
+            color: var(--gold);
+            text-align: center;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        .spec-item span { color: var(--text-gray); }
+        .spec-item strong { color: var(--text-white); font-weight: 500; }
+        .spec-item:last-of-type { border-bottom: none; margin-bottom: 30px; }
+
+        .btn-full {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 16px 0;
+            font-size: 1rem;
+        }
+
+        /* Créditos Rodapé */
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .dev-credits a {
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .dev-credits a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .car-info-grid { grid-template-columns: 1fr; gap: 40px; }
+            .main-image-box { height: 350px; }
+            .car-title-large { font-size: 2.2rem; }
+        }
+        @media (max-width: 600px) {
+            .optionals-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body class="bg-darker">
+
+
+   <!-- Header (Pronto para o efeito Ilha Dinâmica) -->
+<header id="header">
+    <div class="container navbar">
+        <a href="index.html" class="logo">Amanhecer<span>.</span></a>
+        <nav id="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">← Voltar ao Estoque</a></li>
+            </ul>
+        </nav>
+        <a href="https://wa.me/5521999999999" class="btn btn-gold hidden-mobile" target="_blank">Fale com um Consultor</a>
+    </div>
+</header>
+
+    <div style="height: 100px;"></div>
+
+    <!-- Conteúdo Principal -->
+    <main class="container car-details-section">
+        
+        <!-- Galeria de Fotos -->
+        <div class="car-gallery">
+            <div class="main-image-box">
+                <img id="main-car-image" src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=1200" alt="Porsche 911 Carrera S">
+            </div>
+            <div class="thumbnail-list">
+                <img class="thumb active" src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=300" alt="Foto 1" onclick="changeImage(this)">
+                <img class="thumb" src="https://images.unsplash.com/photo-1503376713210-9150ee8c4d32?auto=format&fit=crop&q=80&w=300" alt="Foto 2" onclick="changeImage(this)">
+                <img class="thumb" src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=300" alt="Foto 3" onclick="changeImage(this)">
+                <img class="thumb" src="https://images.unsplash.com/photo-1556800572-1b8aeef2c54f?auto=format&fit=crop&q=80&w=300" alt="Foto 4" onclick="changeImage(this)">
+            </div>
+        </div>
+
+        <!-- Grade de Informações -->
+        <div class="car-info-grid">
+            
+            <!-- Coluna da Esquerda: Detalhes -->
+            <div class="car-description">
+                <div class="car-header-info">
+                    <span class="badge-tag">Único Dono</span>
+                    <span class="badge-tag">Garantia de Fábrica</span>
+                    <h1 class="car-title-large">Porsche 911 Carrera S</h1>
+                    <p class="car-price-large">R$ 980.000,00</p>
+                </div>
+                
+                <!-- 1. OPCIONAIS DE FÁBRICA (AGORA EM PRIMEIRA POSIÇÃO) -->
+                <h3 class="topic-title">Opcionais de Fábrica</h3>
+                <div class="optionals-grid">
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Teto Solar Panorâmico</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Bancos em Couro com Aquecimento</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Sistema de Som Burmester®</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Pacote Sport Chrono</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Rodas Aro 20/21 Carrera Exclusive</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Faróis em LED Matrix (PDLS Plus)</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Câmera 360º e Sensores</span>
+                    </div>
+                    <div class="optional-card">
+                        <span class="check-badge">✓</span>
+                        <span>Apple CarPlay & Android Auto</span>
+                    </div>
+                </div>
+
+                <!-- 2. SOBRE O VEÍCULO (ABAIXO DOS OPCIONAIS E EXPANDÍVEL) -->
+                <h3 class="topic-title">Sobre o Veículo</h3>
+                <div class="desc-wrapper" id="desc-wrapper">
+                    <p class="desc-text">
+                        Veículo em estado impecável, único dono, com todas as revisões feitas rigorosamente em concessionária autorizada Porsche. 
+                        O Porsche 911 Carrera S combina o design icônico e intemporal da marca alemã com uma performance impressionante, entregando 450 cv de potência máxima. 
+                        Equipado com o aclamado pacote Sport Chrono, escapamento esportivo original de fábrica e interior totalmente revestido em couro bicolor. 
+                        Possui histórico completo de manutenção, proteção de pintura em PPF frontal e pneus novos. Uma verdadeira obra de arte sobre rodas, pronta para atender aos colecionadores e entusiastas mais exigentes.
+                    </p>
+                    <div class="fade-overlay"></div>
+                </div>
+                <button type="button" class="btn-read-more" id="btn-read-more" onclick="toggleReadMore()">
+                    <span>Ver mais</span> ↓
+                </button>
+            </div>
+
+            <!-- Coluna da Direita: Ficha Técnica -->
+            <div class="car-specs-sidebar">
+                <div class="specs-card">
+                    <h3>Ficha Técnica</h3>
+                    <div class="spec-item">
+                        <span>Marca</span> <strong>Porsche</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Ano</span> <strong>2024 / 2024</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Quilometragem</span> <strong>0 km</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Combustível</span> <strong>Gasolina</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Câmbio</span> <strong>Automático (PDK)</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Cor</span> <strong>Prata GT Metálico</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Motor</span> <strong>3.0 V6 Turbo (450 cv)</strong>
+                    </div>
+
+                    <a href="https://wa.me/5521999999999?text=Olá,%20tenho%20interesse%20no%20Porsche%20911%20Carrera%20S" class="btn btn-gold btn-full" target="_blank">
+                        Tenho Interesse (WhatsApp)
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer" style="margin-top: 80px;">
+        <div class="footer-bottom container">
+            <p>&copy; 2026 Amanhecer Multimarcas. Todos os direitos reservados.</p>
+            <p class="dev-credits">Desenvolvido por <a href="https://nivotech.com.br" target="_blank" rel="noopener noreferrer">NivoTech</a></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        /* Função para expandir e recolher a descrição do veículo */
+        function toggleReadMore() {
+            const wrapper = document.getElementById('desc-wrapper');
+            const btn = document.getElementById('btn-read-more');
+
+            wrapper.classList.toggle('expanded');
+
+            if (wrapper.classList.contains('expanded')) {
+                btn.innerHTML = '<span>Ver menos</span> ↑';
+            } else {
+                btn.innerHTML = '<span>Ver mais</span> ↓';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Meta Tags -->
+    <title>Amanhecer Multimarcas | Veículos Premium e de Luxo</title>
+    <meta name="description" content="Amanhecer Multimarcas: Sua próxima conquista começa aqui. Encontre carros de luxo, esportivos e premium com garantia de procedência e financiamento exclusivo.">
+    <meta name="keywords" content="carros de luxo, revenda premium, porsche, bmw, mercedes, carros esportivos, amanhecer multimarcas">
+    
+    <!-- Open Graph (Redes Sociais) -->
+    <meta property="og:title" content="Amanhecer Multimarcas | Veículos Premium">
+    <meta property="og:description" content="Encontre o carro ideal para você. Veículos revisados e com garantia de procedência.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fontes do Google: Playfair Display (Títulos) e Poppins (Textos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="header">
+        <div class="container navbar">
+            <a href="#" class="logo">Amanhecer<span>.</span></a>
+            
+            <nav id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#estoque">Estoque</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+
+            <a href="#estoque" class="btn btn-gold hidden-mobile">Ver Estoque</a>
+            
+            <!-- Botão Mobile -->
+            <button id="btn-mobile" aria-label="Abrir Menu">
+                <span id="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text reveal">
+                <p class="subtitle">Sua próxima conquista começa aqui</p>
+                <h1>Encontre o carro <br>ideal para você.</h1>
+                <p class="desc">Elegância, potência e exclusividade. Conheça nossa seleção de veículos premium com 100% de procedência garantida.</p>
+                <div class="hero-buttons">
+                    <a href="#estoque" class="btn btn-gold">Ver Estoque</a>
+                    <a href="#contato" class="btn btn-outline">Fale no WhatsApp</a>
+                </div>
+            </div>
+            <div class="hero-image reveal-right">
+                <!-- Imagem do carro flutuante (Substitua pela imagem real do carro sem fundo) -->
+                <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=800&ixlib=rb-4.0.3" alt="Carro Premium Esportivo" class="floating-car" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Filtro de Pesquisa -->
+    <section id="filtro" class="search-section container reveal">
+        <div class="search-box">
+            <select id="filter-marca">
+                <option value="">Marca</option>
+                <option value="Porsche">Porsche</option>
+                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                <option value="BMW">BMW</option>
+                <option value="Audi">Audi</option>
+            </select>
+            <select id="filter-ano">
+                <option value="">Ano Mínimo</option>
+                <option value="2020">2020</option>
+                <option value="2022">2022</option>
+                <option value="2024">2024</option>
+            </select>
+            <select id="filter-preco">
+                <option value="">Preço Máximo</option>
+                <option value="300000">Até R$ 300.000</option>
+                <option value="600000">Até R$ 600.000</option>
+                <option value="1000000">Até R$ 1.000.000</option>
+            </select>
+            <button id="btn-search" class="btn btn-gold">Pesquisar</button>
+        </div>
+    </section>
+
+    <!-- Veículos em Destaque (Renderizados via JS) -->
+    <section id="estoque" class="stock container">
+        <h2 class="section-title reveal">Veículos em Destaque</h2>
+        <div class="stock-grid" id="stock-grid">
+            <!-- Os cards serão injetados aqui pelo JavaScript -->
+        </div>
+    </section>
+
+    <!-- Por que nos escolher -->
+    <section id="sobre" class="features bg-darker">
+        <div class="container">
+            <h2 class="section-title reveal">Por que escolher nossa garagem?</h2>
+            <div class="features-grid reveal">
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Veículos Revisados</h3>
+                    <p>Rigoroso padrão de qualidade mecânica e estética.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">$</div>
+                    <h3>Financiamento</h3>
+                    <p>Taxas exclusivas e aprovação rápida para o seu novo carro.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🛡️</div>
+                    <h3>Garantia</h3>
+                    <p>Tranquilidade total após a compra do seu seminovo premium.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⭐</div>
+                    <h3>Atendimento VIP</h3>
+                    <p>Equipe especializada pronta para encontrar o modelo ideal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Call to Action -->
+    <section class="banner reveal">
+        <div class="banner-overlay"></div>
+        <div class="container banner-content">
+            <h2>O carro dos seus sonhos está mais perto do que você imagina.</h2>
+            <a href="#contato" class="btn btn-gold">Solicitar Orçamento</a>
+        </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq container reveal">
+        <h2 class="section-title">Perguntas Frequentes</h2>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">Vocês aceitam carro na troca?</button>
+                <div class="accordion-content"><p>Sim, avaliamos seu veículo usado de acordo com a tabela FIPE e o estado de conservação.</p></div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Qual é o prazo de garantia?</button>
+                <div class="accordion-content"><p>Oferecemos garantia de 90 dias para motor e câmbio, conforme previsto em lei, além de garantias estendidas opcionais.</p></div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Fazem financiamento para autônomos?</button>
+                <div class="accordion-content"><p>Sim, trabalhamos com as maiores financeiras do mercado para aprovar seu crédito rapidamente.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="#" class="logo">Amanhecer<span>.</span></a>
+                <p>Referência em veículos premium, oferecendo qualidade, confiança e um atendimento incomparável desde o primeiro contato.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="#estoque">Nosso Estoque</a></li>
+                    <li><a href="#sobre">Quem Somos</a></li>
+                    <li><a href="#filtro">Financiamento</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contato</h3>
+                <p>📍 Av. das Américas, 1000 - RJ</p>
+                <p>📞 (21) 99999-9999</p>
+                <p>✉️ contato@amanhecer.com.br</p>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 Amanhecer Multimarcas. Todos os direitos reservados.</p>
+            <!-- Link da sua agência -->
+            <p>Desenvolvido por <a href="https://nivotech.com.br" target="_blank" class="dev-link">Nivotech</a></p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Flutuante -->
+    <a href="https://wa.me/5521999999999" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+        WA
+    </a>
+
+    <!-- Voltar ao topo -->
+    <button id="back-to-top" aria-label="Voltar ao topo">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
