@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- CSS Geral -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 
     <!-- ESTILOS EXCLUSIVOS DA PÁGINA DE DETALHES -->
     <style>
@@ -270,27 +270,26 @@
 </head>
 <body class="bg-darker">
 
+    <!-- Header Universal com Ilha e Menu Mobile -->
+    <header id="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">Amanhecer<span>.</span></a>
+            
+            <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
 
-   <!-- Header Universal com Ilha e Menu Mobile -->
-<header id="header">
-    <div class="container navbar">
-        <a href="index.html" class="logo">Amanhecer<span>.</span></a>
-        
-        <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
-        <div class="menu-toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
+            <nav id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="../index.html#estoque">Estoque</a></li>
+                    <li><a href="../index.html#sobre">Sobre</a></li>
+                </ul>
+            </nav>
         </div>
-
-        <nav id="nav-menu">
-            <ul class="nav-links">
-                <li><a href="index.html#estoque">Estoque</a></li>
-                <li><a href="index.html#sobre">Sobre</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+    </header>
 
     <div style="height: 100px;"></div>
 
@@ -322,7 +321,7 @@
                     <p class="car-price-large">R$ 980.000,00</p>
                 </div>
                 
-                <!-- 1. OPCIONAIS DE FÁBRICA (AGORA EM PRIMEIRA POSIÇÃO) -->
+                <!-- 1. OPCIONAIS DE FÁBRICA -->
                 <h3 class="topic-title">Opcionais de Fábrica</h3>
                 <div class="optionals-grid">
                     <div class="optional-card">
@@ -359,7 +358,7 @@
                     </div>
                 </div>
 
-                <!-- 2. SOBRE O VEÍCULO (ABAIXO DOS OPCIONAIS E EXPANDÍVEL) -->
+                <!-- 2. SOBRE O VEÍCULO -->
                 <h3 class="topic-title">Sobre o Veículo</h3>
                 <div class="desc-wrapper" id="desc-wrapper">
                     <p class="desc-text">
@@ -419,9 +418,20 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
     <script>
-        /* Função para expandir e recolher a descrição do veículo */
+        /* Troca de foto principal ao clicar nas miniaturas */
+        function changeImage(element) {
+            const mainImg = document.getElementById('main-car-image');
+            // Troca o src da imagem grande pela foto em alta resolução da thumb clicada
+            mainImg.src = element.src.replace('w=300', 'w=1200');
+            
+            // Gerencia a borda dourada ativa
+            document.querySelectorAll('.thumb').forEach(thumb => thumb.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        /* Expande e recolhe a descrição do veículo */
         function toggleReadMore() {
             const wrapper = document.getElementById('desc-wrapper');
             const btn = document.getElementById('btn-read-more');
