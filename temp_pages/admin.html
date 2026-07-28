@@ -27,7 +27,7 @@
             text-align: center;
         }
 
-        /* Layout Grid: 1 Coluna Cadastro / 1 Coluna Estoque (Em telas grandes) */
+        /* Layout Grid: 1 Coluna Cadastro / 1 Coluna Estoque */
         .admin-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -78,6 +78,12 @@
             font-family: 'Poppins', sans-serif;
             transition: 0.3s;
         }
+        .form-group input:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-gray);
+            cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--gold);
@@ -117,7 +123,6 @@
             opacity: 1;
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
-        /* Selo "Capa" visual */
         .img-preview.capa::after {
             content: "CAPA";
             position: absolute;
@@ -169,7 +174,7 @@
         .btn-delete { background: rgba(255, 74, 74, 0.1); color: #ff4a4a; }
         .btn-delete:hover { background: #ff4a4a; color: #fff; }
 
-        /* Modal de Edição (Glassmorphism) */
+        /* Modal de Edição */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -207,12 +212,11 @@
 </head>
 <body class="bg-darker">
 
-    <!-- Header Universal com Ilha e Menu Mobile -->
+    <!-- Header Universal -->
     <header id="header">
         <div class="container navbar">
             <a href="../index.html" class="logo">Amanhecer<span>.</span></a>
             
-            <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
             <div class="menu-toggle" id="mobile-menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -243,21 +247,6 @@
                             <label>Nome do Veículo (Marca e Modelo)</label>
                             <input type="text" id="car-name" placeholder="Ex: Porsche 911 Carrera S" required>
                         </div>
-                        
-                        <div class="form-group">
-                            <label>Ano</label>
-                            <input type="text" id="car-year" placeholder="Ex: 2024" maxlength="4" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Quilometragem (km)</label>
-                            <input type="text" id="car-km" placeholder="Ex: 15.000" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Preço</label>
-                            <input type="text" id="car-price" placeholder="R$ 0,00" required>
-                        </div>
 
                         <div class="form-group">
                             <label>Condição</label>
@@ -266,12 +255,38 @@
                                 <option value="Seminovo">Seminovo</option>
                             </select>
                         </div>
+                        
+                        <div class="form-group">
+                            <label>Quilometragem</label>
+                            <input type="text" id="car-km" placeholder="0 km" required>
+                        </div>
 
-                        <div class="form-group full-width">
+                        <div class="form-group">
+                            <label>Ano / Modelo</label>
+                            <input type="text" id="car-year" placeholder="Ex: 2024 ou 2023/2024" maxlength="9" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preço</label>
+                            <input type="text" id="car-price" placeholder="R$ 0,00" required>
+                        </div>
+
+                        <div class="form-group">
                             <label>Câmbio</label>
                             <select id="car-gear">
                                 <option value="Automático">Automático</option>
                                 <option value="Manual">Manual</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Combustível</label>
+                            <select id="car-fuel">
+                                <option value="Flex">Flex</option>
+                                <option value="Gasolina">Gasolina</option>
+                                <option value="Elétrico">Elétrico</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Híbrido">Híbrido</option>
                             </select>
                         </div>
 
@@ -291,9 +306,7 @@
                                 <span>+ Clique para Selecionar Fotos</span>
                                 <input type="file" id="car-images" multiple accept="image/*" onchange="previewImages(this, 'preview-container')">
                             </div>
-                            <div class="image-preview-container" id="preview-container">
-                                <!-- Miniaturas aparecerão aqui -->
-                            </div>
+                            <div class="image-preview-container" id="preview-container"></div>
                         </div>
                     </div>
                     
@@ -304,9 +317,7 @@
             <!-- COLUNA 2: ESTOQUE ATUAL -->
             <div class="admin-card">
                 <h3>Veículos no Site</h3>
-                <div id="inventory-list">
-                    <!-- Itens inseridos via JavaScript -->
-                </div>
+                <div id="inventory-list"></div>
             </div>
 
         </div>
@@ -328,21 +339,6 @@
                         <label>Nome do Veículo (Marca e Modelo)</label>
                         <input type="text" id="edit-name" required>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Ano</label>
-                        <input type="text" id="edit-year" maxlength="4" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Quilometragem (km)</label>
-                        <input type="text" id="edit-km" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Preço</label>
-                        <input type="text" id="edit-price" required>
-                    </div>
 
                     <div class="form-group">
                         <label>Condição</label>
@@ -351,12 +347,38 @@
                             <option value="Seminovo">Seminovo</option>
                         </select>
                     </div>
+                    
+                    <div class="form-group">
+                        <label>Quilometragem</label>
+                        <input type="text" id="edit-km" required>
+                    </div>
 
-                    <div class="form-group full-width">
+                    <div class="form-group">
+                        <label>Ano / Modelo</label>
+                        <input type="text" id="edit-year" maxlength="9" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preço</label>
+                        <input type="text" id="edit-price" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Câmbio</label>
                         <select id="edit-gear">
                             <option value="Automático">Automático</option>
                             <option value="Manual">Manual</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Combustível</label>
+                        <select id="edit-fuel">
+                            <option value="Flex">Flex</option>
+                            <option value="Gasolina">Gasolina</option>
+                            <option value="Elétrico">Elétrico</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Híbrido">Híbrido</option>
                         </select>
                     </div>
 
@@ -371,14 +393,12 @@
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Alterar Fotos (Nova seleção substitui as antigas)</label>
+                        <label>Alterar Fotos</label>
                         <div class="file-upload-box" onclick="document.getElementById('edit-images').click()">
                             <span>+ Clique para Selecionar Novas Fotos</span>
                             <input type="file" id="edit-images" multiple accept="image/*" onchange="previewImages(this, 'edit-preview-container')">
                         </div>
-                        <div class="image-preview-container" id="edit-preview-container">
-                            <!-- Miniaturas da edição aparecerão aqui -->
-                        </div>
+                        <div class="image-preview-container" id="edit-preview-container"></div>
                     </div>
                 </div>
 
@@ -397,7 +417,7 @@
 
     <!-- SCRIPTS DO PAINEL ADMIN -->
     <script>
-        // --- 1. MÁSCARAS DE INPUTS (Formatação Automática) --- //
+        // --- 1. MÁSCARAS E REGRAS DE INTERAÇÃO DOS INPUTS --- //
         
         // Máscara de Moeda (Preço)
         function applyCurrencyMask(e) {
@@ -409,27 +429,64 @@
         document.getElementById('car-price').addEventListener('input', applyCurrencyMask);
         document.getElementById('edit-price').addEventListener('input', applyCurrencyMask);
 
-        // Máscara de Quilometragem
+        // Máscara de Quilometragem (Acrescenta "km")
         function applyKmMask(e) {
             let value = e.target.value.replace(/\D/g, "");
             if(value) {
-                e.target.value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                e.target.value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " km";
+            } else {
+                e.target.value = "";
             }
         }
         document.getElementById('car-km').addEventListener('input', applyKmMask);
         document.getElementById('edit-km').addEventListener('input', applyKmMask);
 
-        // Máscara Ano (Apenas números)
+        // Máscara Ano (Insere a barra '/' automaticamente ao digitar o 5º dígito)
         function applyYearMask(e) {
-            e.target.value = e.target.value.replace(/\D/g, "");
+            // Remove tudo que não for número
+            let value = e.target.value.replace(/\D/g, ""); 
+
+            // Limita ao máximo de 8 números (4 para o primeiro ano + 4 para o segundo)
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+
+            // Se tiver mais de 4 dígitos, insere a barra automaticamente
+            if (value.length > 4) {
+                e.target.value = value.substring(0, 4) + "/" + value.substring(4);
+            } else {
+                e.target.value = value;
+            }
         }
         document.getElementById('car-year').addEventListener('input', applyYearMask);
         document.getElementById('edit-year').addEventListener('input', applyYearMask);
 
-        // --- 2. UPLOAD DE FOTOS E CAPA --- //
+        // Alternar trava do campo KM com base na Condição (Novo / Seminovo)
+        function toggleKmByCondition(conditionId, kmId) {
+            const condSelect = document.getElementById(conditionId);
+            const kmInput = document.getElementById(kmId);
+
+            if (condSelect.value === 'Novo') {
+                kmInput.value = '0 km';
+                kmInput.disabled = true;
+            } else {
+                if (kmInput.value === '0 km') kmInput.value = '';
+                kmInput.disabled = false;
+            }
+        }
+
+        // Listeners para a trava de KM
+        document.getElementById('car-condition').addEventListener('change', () => toggleKmByCondition('car-condition', 'car-km'));
+        document.getElementById('edit-condition').addEventListener('change', () => toggleKmByCondition('edit-condition', 'edit-km'));
+
+        // Executa ao carregar para travar o campo do formulário de cadastro inicialmente
+        toggleKmByCondition('car-condition', 'car-km');
+
+
+        // --- 2. UPLOAD DE FOTOS E PREVIEW --- //
         function previewImages(input, containerId) {
             const container = document.getElementById(containerId);
-            container.innerHTML = ""; // Limpa previews antigos
+            container.innerHTML = "";
             
             if(input.files) {
                 Array.from(input.files).forEach((file, index) => {
@@ -438,7 +495,7 @@
                         const img = document.createElement('img');
                         img.src = e.target.result;
                         img.classList.add('img-preview');
-                        if(index === 0) img.classList.add('capa'); // Primeira foto é capa
+                        if(index === 0) img.classList.add('capa');
                         
                         img.onclick = function() {
                             document.querySelectorAll('#' + containerId + ' .img-preview').forEach(i => i.classList.remove('capa'));
@@ -451,10 +508,10 @@
             }
         }
 
-        // --- 3. SIMULAÇÃO DO BANCO DE DADOS --- //
+        // --- 3. BANCO DE DADOS SIMULADO --- //
         let inventory = [
-            { id: 1, name: 'Porsche 911 Carrera S', year: '2024', km: '0', price: 'R$ 980.000,00', condition: 'Novo', gear: 'Automático', options: 'Teto Solar, Sport Chrono', desc: 'Veículo em estado impecável.', img: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=150' },
-            { id: 2, name: 'BMW M4 Competition', year: '2023', km: '12.500', price: 'R$ 650.000,00', condition: 'Seminovo', gear: 'Automático', options: 'Bancos Concha, Harman Kardon', desc: 'Revisões na concessionária.', img: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=150' }
+            { id: 1, name: 'Porsche 911 Carrera S', year: '2024', km: '0 km', price: 'R$ 980.000,00', condition: 'Novo', gear: 'Automático', fuel: 'Gasolina', options: 'Teto Solar, Sport Chrono', desc: 'Veículo em estado impecável.', img: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=150' },
+            { id: 2, name: 'BMW M4 Competition', year: '2023/2024', km: '12.500 km', price: 'R$ 650.000,00', condition: 'Seminovo', gear: 'Automático', fuel: 'Gasolina', options: 'Bancos Concha, Harman Kardon', desc: 'Revisões na concessionária.', img: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=150' }
         ];
 
         const listContainer = document.getElementById('inventory-list');
@@ -473,7 +530,7 @@
                     <img src="${car.img}" alt="${car.name}">
                     <div class="car-info-list">
                         <h4>${car.name} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-gray);">(${car.year})</span></h4>
-                        <p>${car.price}</p>
+                        <p>${car.price} • ${car.fuel}</p>
                     </div>
                     <div class="car-actions">
                         <button class="btn-action btn-edit" onclick="openEditModal(${car.id})">Editar</button>
@@ -484,7 +541,7 @@
             });
         }
 
-        // Cadastro de Novo Carro
+        // Cadastrar Novo Carro
         document.getElementById('form-add-car').addEventListener('submit', function(e) {
             e.preventDefault();
             const newCar = {
@@ -495,6 +552,7 @@
                 price: document.getElementById('car-price').value,
                 condition: document.getElementById('car-condition').value,
                 gear: document.getElementById('car-gear').value,
+                fuel: document.getElementById('car-fuel').value,
                 options: document.getElementById('car-options').value,
                 desc: document.getElementById('car-desc').value,
                 img: document.querySelector('#preview-container .capa')?.src || 'https://images.unsplash.com/photo-1503376713210-9150ee8c4d32?w=150'
@@ -502,11 +560,12 @@
             inventory.push(newCar);
             renderInventory();
             this.reset();
+            toggleKmByCondition('car-condition', 'car-km'); // Re-aplica a trava de 0 km
             document.getElementById('preview-container').innerHTML = '';
             alert('Veículo cadastrado com sucesso!');
         });
 
-        // Deletar
+        // Deletar Veículo
         function deleteCar(id) {
             if(confirm('Tem certeza que deseja excluir este veículo?')) {
                 inventory = inventory.filter(car => car.id !== id);
@@ -522,15 +581,17 @@
             if(car) {
                 document.getElementById('edit-id').value = car.id;
                 document.getElementById('edit-name').value = car.name;
-                document.getElementById('edit-year').value = car.year;
-                document.getElementById('edit-km').value = car.km;
-                document.getElementById('edit-price').value = car.price;
                 document.getElementById('edit-condition').value = car.condition;
+                document.getElementById('edit-km').value = car.km;
+                document.getElementById('edit-year').value = car.year;
+                document.getElementById('edit-price').value = car.price;
                 document.getElementById('edit-gear').value = car.gear;
+                document.getElementById('edit-fuel').value = car.fuel || 'Flex';
                 document.getElementById('edit-options').value = car.options;
                 document.getElementById('edit-desc').value = car.desc;
                 
-                // Mostra a foto atual no preview da edição
+                toggleKmByCondition('edit-condition', 'edit-km');
+                
                 document.getElementById('edit-preview-container').innerHTML = `
                     <img src="${car.img}" class="img-preview capa">
                 `;
@@ -553,15 +614,15 @@
             
             if(car) {
                 car.name = document.getElementById('edit-name').value;
-                car.year = document.getElementById('edit-year').value;
-                car.km = document.getElementById('edit-km').value;
-                car.price = document.getElementById('edit-price').value;
                 car.condition = document.getElementById('edit-condition').value;
+                car.km = document.getElementById('edit-km').value;
+                car.year = document.getElementById('edit-year').value;
+                car.price = document.getElementById('edit-price').value;
                 car.gear = document.getElementById('edit-gear').value;
+                car.fuel = document.getElementById('edit-fuel').value;
                 car.options = document.getElementById('edit-options').value;
                 car.desc = document.getElementById('edit-desc').value;
                 
-                // Se adicionou uma nova foto na edição, substitui. Caso contrário, mantém a antiga.
                 const newImg = document.querySelector('#edit-preview-container .capa')?.src;
                 if(newImg) {
                     car.img = newImg;
@@ -577,7 +638,7 @@
         renderInventory();
     </script>
     
-    <!-- Script Principal (Mantém o efeito da Ilha no Header) -->
+    <!-- Script Principal -->
     <script src="../script.js"></script>
 </body>
 </html>
