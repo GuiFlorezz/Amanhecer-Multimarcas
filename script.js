@@ -140,29 +140,31 @@ if (backToTop) {
     });
 }
 
-/* ================= MENU MOBILE ================= */
-const btnMobile = document.getElementById('btn-mobile');
-const navLinks = document.querySelector('.nav-links');
+// --- 2. MENU HAMBÚRGUER (RESPONSIVO PARA CELULAR) ---
+    const btnMobile = document.getElementById('mobile-menu');
+    const menuLinks = document.querySelector('.nav-links');
 
-if (btnMobile && navLinks) {
-    btnMobile.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        const hamburger = document.getElementById('hamburger');
-        if (hamburger) {
-            if (navLinks.classList.contains('active')) {
-                hamburger.style.background = 'transparent';
-            } else {
-                hamburger.style.background = 'var(--text-white)';
-            }
-        }
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+    if (btnMobile && menuLinks) {
+        // Abre ou fecha o menu ao tocar nos 3 riscos
+        btnMobile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuLinks.classList.toggle('active');
         });
-    });
-}
+
+        // Fecha o menu se você clicar em qualquer link
+        document.querySelectorAll('.nav-links li a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuLinks.classList.remove('active');
+            });
+        });
+
+        // Fecha o menu se você clicar fora dele na tela
+        document.addEventListener('click', (e) => {
+            if (!btnMobile.contains(e.target) && !menuLinks.contains(e.target)) {
+                menuLinks.classList.remove('active');
+            }
+        });
+    }
 
 /* ================= SCROLL REVEAL (Exibição dos elementos) ================= */
 const reveals = document.querySelectorAll('.reveal, .reveal-right');

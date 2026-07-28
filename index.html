@@ -23,28 +23,27 @@
 </head>
 <body>
 
-    <!-- Header / Navbar -->
-    <header id="header">
-        <div class="container navbar">
-            <a href="#" class="logo">Amanhecer<span>.</span></a>
-            
-            <nav id="nav-menu">
-                <ul class="nav-links">
-                    <li><a href="#inicio">Início</a></li>
-                    <li><a href="#estoque">Estoque</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                </ul>
-            </nav>
-
-            <a href="#estoque" class="btn btn-gold hidden-mobile">Ver Estoque</a>
-            
-            <!-- Botão Mobile -->
-            <button id="btn-mobile" aria-label="Abrir Menu">
-                <span id="hamburger"></span>
-            </button>
+   <!-- Header Universal com Ilha e Menu Mobile -->
+<header id="header">
+    <div class="container navbar">
+        <a href="index.html" class="logo">Amanhecer<span>.</span></a>
+        
+        <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
         </div>
-    </header>
+
+        <nav id="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html#estoque">Estoque</a></li>
+                <li><a href="index.html#sobre">Sobre</a></li>
+                <li><a href="login.html">Painel</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
     <!-- Hero Section -->
     <section id="inicio" class="hero">

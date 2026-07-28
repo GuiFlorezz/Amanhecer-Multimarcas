@@ -495,108 +495,152 @@ header.island-mode .btn {
     .hero-text { display: flex; flex-direction: column; align-items: center; }
 }
 
+
+
 /* ======================================================
-   RESPONSIVIDADE (MOBILE / CELULARES E TABLETS)
+   CONFIGURAÇÃO DO MENU HAMBÚRGUER (BASE)
+   ====================================================== */
+/* Oculta os 3 riscos no Computador */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--gold);
+    border-radius: 3px;
+    transition: 0.3s ease;
+}
+
+/* ======================================================
+   RESPONSIVIDADE COMPLETA (APENAS PARA DISPOSITIVOS MÓVEIS)
    ====================================================== */
 @media (max-width: 768px) {
-    
-    /* --- 1. CABEÇALHO E ILHA DINÂMICA --- */
-    /* No celular, o header se adapta para não espremer os botões */
+
+    /* --- 1. CABEÇALHO E MENU HAMBÚRGUER --- */
     .navbar {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-    }
-    #header.island-mode .navbar {
-        width: 90%; /* A ilha fica um pouco mais larga no celular */
-        border-radius: 20px;
-    }
-    .nav-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-    .hidden-mobile {
-        display: none !important; /* Esconde botões extras no topo para limpar a tela */
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 20px !important;
     }
 
-    /* --- 2. SEÇÃO PRINCIPAL (HERO - INDEX) --- */
+    #header.island-mode .navbar {
+        width: 92% !important;
+        padding: 10px 20px !important;
+        border-radius: 30px !important;
+    }
+
+    .menu-toggle {
+        display: flex !important;
+    }
+
+    /* Menu Suspenso Flutuante (Glassmorphism) */
+    .nav-links {
+        display: none; /* Escondido por padrão no celular */
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        right: 4%;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        width: 220px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        gap: 15px;
+        text-align: center;
+        z-index: 10000;
+    }
+
+    .nav-links.active {
+        display: flex !important;
+    }
+
+    /* --- 2. INDEX / HOME --- */
     .hero {
-        padding-top: 100px; /* Ajusta o teto para o texto não colar lá em cima */
+        padding-top: 110px !important;
     }
     .hero-content {
-        flex-direction: column; /* Coloca o texto em cima e a foto embaixo */
-        text-align: center; /* Centraliza o texto */
-        gap: 30px;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 20px !important;
     }
     .hero-text h1 {
-        font-size: 2.5rem; /* Título um pouco menor para caber na tela */
+        font-size: 2rem !important; /* Tamanho proporcional para celular */
+        line-height: 1.2 !important;
     }
     .hero-buttons {
-        display: flex;
-        flex-direction: column; /* Empilha os botões */
-        gap: 15px;
-        width: 100%;
+        flex-direction: column !important;
+        width: 100% !important;
     }
     .hero-buttons .btn {
-        width: 100%; /* Botões ocupam a largura total no celular */
+        width: 100% !important;
         text-align: center;
     }
-    .hero-image img {
-        height: 250px; /* Reduz a altura da imagem do carro no celular */
-    }
 
-    /* --- 3. BARRA DE FILTROS --- */
-    .filter-section {
-        margin-top: 15px !important; /* Desfaz a margem muito negativa, já que o layout empilhou */
-        margin-bottom: 30px;
-    }
-    /* Se a sua caixa de filtros usa flexbox, isso vai empilhar as seleções de Marca, Ano, etc. */
+    /* Grade de Carros e Filtros */
     .filter-section form, 
-    .filter-section > div {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+    .filter-grid {
+        grid-template-columns: 1fr !important; /* 1 coluna */
+        gap: 15px !important;
     }
-    .filter-section select, 
-    .filter-section button {
-        width: 100%; /* Botão "Pesquisar" grandão e fácil de clicar */
+    .cars-grid {
+        grid-template-columns: 1fr !important; /* 1 card por linha */
     }
 
-    /* --- 4. PÁGINA ADMIN (PAINEL) --- */
+    /* --- 3. PÁGINA DE DETALHES --- */
+    .car-details-grid {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+    }
+    .car-gallery-main {
+        height: 250px !important;
+    }
+    .car-specs-grid {
+        grid-template-columns: 1fr 1fr !important; /* 2 itens de especificação por linha */
+    }
+
+    /* --- 4. PÁGINA DE LOGIN --- */
+    .login-container {
+        padding: 100px 15px 40px !important;
+    }
+    .login-card {
+        padding: 30px 20px !important;
+        width: 100% !important;
+    }
+
+    /* --- 5. PAINEL ADMIN --- */
     .admin-main {
-        padding: 100px 15px 40px; /* Menos margem nas laterais */
+        padding: 100px 15px 40px !important;
+    }
+    .admin-grid {
+        grid-template-columns: 1fr !important;
     }
     .form-grid {
-        grid-template-columns: 1fr; /* Passa o formulário de 2 colunas para 1 coluna apenas */
+        grid-template-columns: 1fr !important;
     }
     .car-list-item {
-        flex-direction: column; /* A foto do carro fica em cima, dados embaixo */
+        flex-direction: column !important;
         text-align: center;
     }
     .car-list-item img {
-        width: 100%;
-        height: 180px; /* Foto do carro maior na listagem do admin pelo celular */
+        width: 100% !important;
+        height: 160px !important;
     }
     .car-actions {
-        width: 100%;
+        width: 100% !important;
         justify-content: center;
-        margin-top: 10px;
-    }
-    .btn-action {
-        flex: 1; /* Botões de Editar e Excluir dividem o espaço 50/50 */
     }
     .modal-content {
-        width: 95%; /* Modal de edição ocupa a tela quase toda */
-        padding: 20px;
-    }
-
-    /* --- 5. PÁGINA DE LOGIN --- */
-    .login-card {
-        padding: 40px 20px; /* Diminui o espaçamento interno do card para não vazar a tela */
-    }
-    .login-header h2 {
-        font-size: 1.6rem;
+        width: 95% !important;
+        padding: 20px !important;
     }
 }
