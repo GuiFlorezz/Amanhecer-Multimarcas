@@ -1,3 +1,8 @@
+html {
+    scroll-behavior: smooth;
+}
+
+
 /* ================= VARIABLES ================= */
 :root {
     --bg-main: #0b0b0b;
@@ -486,6 +491,57 @@ header.island-mode .btn {
 .reveal.active { opacity: 1; transform: translateY(0); }
 .reveal-right { opacity: 0; transform: translateX(50px); transition: 0.8s ease-out; }
 .reveal-right.active { opacity: 1; transform: translateX(0); }
+
+
+/* --- EFEITO DE ENTRADA SUAVE (SCROLL REVEAL) --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Estado quando o elemento entra na tela */
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- HOVER ELEGANTE NOS CARDS --- */
+.car-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease !important;
+    overflow: hidden; /* Mantém a imagem presa dentro do card durante o zoom */
+}
+
+.car-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.25) !important;
+    border-color: var(--gold) !important;
+}
+
+/* Zoom suave na foto do veículo */
+.car-card img {
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.car-card:hover img {
+    transform: scale(1.06) !important;
+}
+
+
+/* --- ANIMAÇÃO DE BRILHO NOS BOTÕES --- */
+.btn, .btn-primary {
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.btn:hover, .btn-primary:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4) !important;
+}
+
+.btn:active {
+    transform: scale(0.98) !important; /* Feedback tátil de clique */
+}
 
 /* ================= MEDIA QUERIES (Responsividade) ================= */
 @media (max-width: 992px) {

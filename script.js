@@ -107,6 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', checkScroll, { passive: true });
     window.addEventListener('resize', checkScroll);
 
+    // --- ANIMATION: SCROLL REVEAL ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Aplica a animação nos cards de carros, filtros e seções
+    document.querySelectorAll('.car-card, .filter-section, .about-content, .hero-content').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+    
     // Executa ao carregar a página
     checkScroll();
 });
