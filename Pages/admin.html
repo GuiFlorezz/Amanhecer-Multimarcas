@@ -208,26 +208,26 @@
 <body class="bg-darker">
 
     <!-- Header Universal com Ilha e Menu Mobile -->
-<header id="header">
-    <div class="container navbar">
-        <a href="../index.html" class="logo">Amanhecer<span>.</span></a>
-        
-        <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
-        <div class="menu-toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
+    <header id="header">
+        <div class="container navbar">
+            <a href="../index.html" class="logo">Amanhecer<span>.</span></a>
+            
+            <!-- Botão Hambúrguer (Escondido no PC, Visível no Celular) -->
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
 
-        <nav id="nav-menu">
-            <ul class="nav-links">
-                <li><a href="../index.html">Estoque</a></li>
-                <li><a href="../index.html">Sobre</a></li>
-                <li><a href="login.html">Painel</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+            <nav id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="../index.html#estoque">Estoque</a></li>
+                    <li><a href="../index.html#sobre">Sobre</a></li>
+                    <li><a href="login.html">Sair (Painel)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     <main class="admin-main">
         <h1 class="admin-title">Painel Administrativo</h1>
@@ -397,7 +397,7 @@
 
     <!-- SCRIPTS DO PAINEL ADMIN -->
     <script>
-       // --- 1. MÁSCARAS DE INPUTS (Formatação Automática) --- //
+        // --- 1. MÁSCARAS DE INPUTS (Formatação Automática) --- //
         
         // Máscara de Moeda (Preço)
         function applyCurrencyMask(e) {
@@ -452,7 +452,6 @@
         }
 
         // --- 3. SIMULAÇÃO DO BANCO DE DADOS --- //
-        // Adicionamos os outros campos na simulação para teste
         let inventory = [
             { id: 1, name: 'Porsche 911 Carrera S', year: '2024', km: '0', price: 'R$ 980.000,00', condition: 'Novo', gear: 'Automático', options: 'Teto Solar, Sport Chrono', desc: 'Veículo em estado impecável.', img: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=150' },
             { id: 2, name: 'BMW M4 Competition', year: '2023', km: '12.500', price: 'R$ 650.000,00', condition: 'Seminovo', gear: 'Automático', options: 'Bancos Concha, Harman Kardon', desc: 'Revisões na concessionária.', img: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=150' }
