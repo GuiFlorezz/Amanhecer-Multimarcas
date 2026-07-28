@@ -43,7 +43,7 @@ const renderCars = (carArray) => {
                         <span>⛽ ${car.combustivel}</span>
                         <span>⚙️ ${car.transmissao}</span>
                     </div>
-                    <a href="pages/detalhes.html" class="btn btn-outline" style="width: 100%; border-color: var(--border); display: block; text-align: center; margin-top: 15px;">Ver Detalhes</a>
+                    <a href="/pages/detalhes.html?id=${car.id}" class="btn btn-outline" style="width: 100%; border-color: var(--border); display: block; text-align: center; margin-top: 15px;">Ver Detalhes</a>
                 </div>
             </div>
         `;
