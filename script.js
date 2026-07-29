@@ -1,4 +1,4 @@
-/* ================= HEADER BLUR ON SCROLL (Corrigido o escopo da variável) ================= */
+/* ================= HEADER BLUR ON SCROLL ================= */
 const header = document.querySelector('header');
 const backToTop = document.getElementById('back-to-top');
 
@@ -38,34 +38,33 @@ const cars = [
     { id: 8, marca: 'Audi', modelo: 'Q8 S-line', ano: 2023, km: '10.000', combustivel: 'Gasolina', transmissao: 'Automática', preco: 520000, img: 'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?auto=format&fit=crop&q=80&w=600' }
 ];
 
-/* Formatar Moeda BR (Usado na migração) */
+/* Formatar Moeda BR */
 const formatPrice = (price) => {
     return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 };
 
-/* ================= INTEGRAÇÃO DO ESTOQUE (FICÍTIO + LOCALSTORAGE) ================= */
+/* ================= INTEGRAÇÃO DO ESTOQUE (LOCALSTORAGE) ================= */
 let inventory = JSON.parse(localStorage.getItem('amanhecer_inventory'));
 
-// Se o localStorage estiver vazio, converte o banco fictício para o padrão do Admin e salva!
+// Se o localStorage estiver vazio, converte o banco fictício para o padrão do Admin
 if (!inventory || inventory.length === 0) {
     inventory = cars.map(c => ({
         id: c.id,
-        name: `${c.marca} ${c.modelo}`, // Junta marca e modelo num campo só (padrão admin)
+        name: `${c.marca} ${c.modelo}`,
         year: c.ano.toString(),
-        km: c.km === '0' ? '0 km' : `${c.km} km`, // Adiciona "km" no final
-        price: formatPrice(c.preco), // Já guarda formatado "R$ 980.000,00"
+        km: c.km === '0' ? '0 km' : `${c.km} km`,
+        price: formatPrice(c.preco),
         condition: c.km === '0' ? 'Novo' : 'Seminovo',
         gear: c.transmissao,
         fuel: c.combustivel,
-        options: 'Bancos em couro, Teto solar panorâmico, Ar digital dual zone, Central multimídia.',
-        desc: 'Veículo em excelente estado de conservação, revisões em dia e com garantia.',
+        options: 'Bancos em couro, Teto solar panorâmico, Ar digital dual zone, Central multimídia',
+        desc: 'Veículo em excelente estado de conservação, revisões em dia e com garantia Amanhecer Multimarcas.',
         img: c.img
     }));
-    // Salva no navegador! Agora o seu Painel Admin vai conseguir ver esses carros também.
     localStorage.setItem('amanhecer_inventory', JSON.stringify(inventory));
 }
 
-/* ================= RENDERIZAR CARROS ================= */
+/* ================= RENDERIZAR CARROS (INDEX) ================= */
 const stockGrid = document.getElementById('stock-grid');
 
 const renderCars = (carArray) => {
@@ -78,7 +77,6 @@ const renderCars = (carArray) => {
         return;
     }
 
-    // Agora iteramos sobre a lista unificada "inventory"
     carArray.forEach(car => {
         const carHTML = `
             <div class="car-card">
@@ -107,8 +105,7 @@ if (stockGrid) {
     renderCars(inventory);
 }
 
-// ================= LÓGICA DE FILTRO ATUALIZADA =================
-// Função para converter "R$ 150.000,00" de volta para 150000 para poder comparar matematicamente
+/* ================= LÓGICA DE FILTRO ================= */
 const parsePriceToNumber = (priceString) => {
     if(!priceString) return 0;
     return parseFloat(priceString.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
@@ -123,14 +120,11 @@ if (btnSearch) {
 
         const filtered = inventory.filter(car => {
             let match = true;
-            // Verifica se o nome do carro inclui a marca filtrada
             if (marcaVal && !car.name.toLowerCase().includes(marcaVal)) match = false;
             
-            // Pega o primeiro ano se for "2023/2024"
             const carYear = parseInt(car.year.split('/')[0]);
             if (anoVal && carYear < parseInt(anoVal)) match = false;
             
-            // Converte a string de preço para número para validar
             if (precoVal && parsePriceToNumber(car.price) > parseInt(precoVal)) match = false;
             
             return match;
@@ -145,9 +139,7 @@ if (btnSearch) {
     });
 }
 
-/* ======================================================
-   EFEITO ILHA DINÂMICA AO SAIR DA SEÇÃO PRINCIPAL
-   ====================================================== */
+/* ================= EFEITO ILHA DINÂMICA & ANIMATION ================= */
 document.addEventListener('DOMContentLoaded', () => {
     const mainSection = document.querySelector('.hero') || document.querySelector('.car-details-section') || document.querySelector('main');
 
@@ -166,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', checkScroll, { passive: true });
     window.addEventListener('resize', checkScroll);
 
-    // --- ANIMATION: SCROLL REVEAL (CORRIGIDO) ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -175,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
 
-    // Correção: Agora ele caça diretamente as classes reveal e reveal-right que estão no HTML
     document.querySelectorAll('.reveal, .reveal-right').forEach(el => {
         observer.observe(el);
     });
@@ -183,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkScroll();
 });
 
-// --- 2. MENU HAMBÚRGUER (RESPONSIVO PARA CELULAR) ---
+/* ================= MENU HAMBÚRGUER ================= */
 const btnMobile = document.getElementById('mobile-menu');
 const menuLinks = document.querySelector('.nav-links');
 
@@ -221,7 +211,7 @@ accordionItems.forEach(item => {
     }
 });
 
-/* ================= GALERIA DE FOTOS (Página de Detalhes) ================= */
+/* ================= GALERIA DE FOTOS ================= */
 function changeImage(element) {
     const mainImage = document.getElementById('main-car-image');
     if (mainImage) {
@@ -233,67 +223,100 @@ function changeImage(element) {
     element.classList.add('active');
 }
 
-/* ======================================================
-   CARREGAMENTO DA PÁGINA DE DETALHES (detalhes.html)
-   ====================================================== */
+/* ================= CARREGAMENTO DA PÁGINA DE DETALHES (detalhes.html) ================= */
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Verifica se estamos na página de detalhes (procurando um elemento chave)
     const detailTitle = document.getElementById('detail-title');
-    if (!detailTitle) return; // Se não achar o título, ignora o resto deste código
+    if (!detailTitle) return; // Só roda se estiver na página de detalhes
 
-    // 2. Captura o ID que está na URL (ex: detalhes.html?id=123)
+    // Captura o ID da URL
     const urlParams = new URLSearchParams(window.location.search);
-    const carId = parseInt(urlParams.get('id'));
+    const carId = urlParams.get('id');
 
-    // 3. Puxa o banco de dados do navegador
-    const inventory = JSON.parse(localStorage.getItem('amanhecer_inventory')) || [];
+    // Carrega o estoque atual do localStorage
+    const currentInventory = JSON.parse(localStorage.getItem('amanhecer_inventory')) || [];
     
-    // 4. Encontra o carro exato usando o ID
-    const car = inventory.find(c => c.id === carId);
+    // Busca o veículo comparando IDs como String
+    const car = currentInventory.find(c => String(c.id) === String(carId));
 
-    // 5. Preenche a tela com os dados do carro ou avisa erro
     if (car) {
-        // Preenchendo os textos básicos
-        document.getElementById('detail-title').textContent = car.name;
-        document.getElementById('detail-price').textContent = car.price;
-        document.getElementById('detail-year').textContent = car.year;
-        document.getElementById('detail-km').textContent = car.km;
-        document.getElementById('detail-gear').textContent = car.gear;
-        document.getElementById('detail-fuel').textContent = car.fuel;
-        document.getElementById('detail-desc').textContent = car.desc;
+        // Função auxiliar segura para atualizar elementos
+        const setContent = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val || '--';
+        };
 
-        // Trocando a imagem principal
+        setContent('detail-title', car.name);
+        setContent('detail-price', car.price);
+        setContent('detail-year', car.year);
+        setContent('detail-km', car.km);
+        setContent('detail-gear', car.gear);
+        setContent('detail-fuel', car.fuel);
+        setContent('detail-desc', car.desc);
+        setContent('detail-condition', car.condition || 'Exclusivo');
+
+        // --- SUPORTE COMPLETO PARA MULTI-IMAGENS ---
+        let imageList = [];
+        const rawImages = car.images || car.fotos || car.galeria || car.img;
+
+        if (Array.isArray(rawImages)) {
+            imageList = rawImages;
+        } else if (typeof rawImages === 'string' && rawImages.trim() !== '') {
+            imageList = rawImages.split(',').map(url => url.trim()).filter(url => url !== '');
+        }
+
+        // Garante que a foto de capa (car.img) esteja inclusa na galeria
+        if (car.img && !imageList.includes(car.img)) {
+            imageList.unshift(car.img);
+        }
+
+        // Remove duplicadas
+        imageList = [...new Set(imageList)];
+
+        // Imagem Principal
         const mainImage = document.getElementById('main-car-image');
-        if (mainImage) mainImage.src = car.img;
+        if (mainImage && imageList.length > 0) {
+            mainImage.src = imageList[0];
+        }
 
-        // Gerando as miniaturas (thumbnails)
+        // Renderiza Miniaturas da Galeria
         const thumbnailsContainer = document.getElementById('detail-thumbnails');
         if (thumbnailsContainer) {
-            // Como no nosso banco atual só salvamos 1 foto por carro, 
-            // vamos mostrar ela. Se no futuro você adicionar mais fotos, é só fazer um loop aqui!
-            thumbnailsContainer.innerHTML = `
-                <img src="${car.img}" alt="Miniatura" class="thumb active" onclick="changeImage(this)">
-            `;
-        }
-
-        // Transformando os opcionais separados por vírgula em uma lista bonita (<li>)
-        const optionsList = document.getElementById('detail-options');
-        if (optionsList && car.options) {
-            optionsList.innerHTML = ''; // Limpa a lista atual
-            // Separa os itens por vírgula
-            const optionsArray = car.options.split(','); 
-            
-            optionsArray.forEach(opt => {
-                // Só adiciona se não for um espaço vazio
-                if(opt.trim() !== '') { 
-                    optionsList.innerHTML += `<li><i class="fas fa-check" style="color: var(--gold); margin-right: 10px;"></i> ${opt.trim()}</li>`;
-                }
+            thumbnailsContainer.innerHTML = '';
+            imageList.forEach((imgUrl, index) => {
+                thumbnailsContainer.innerHTML += `
+                    <img src="${imgUrl}" alt="${car.name}" class="thumb ${index === 0 ? 'active' : ''}" onclick="changeImage(this)">
+                `;
             });
         }
-        
+
+        // Opcionais com Badge ✓
+        const optionsList = document.getElementById('detail-options');
+        if (optionsList) {
+            optionsList.innerHTML = '';
+            if (car.options) {
+                const optionsArray = typeof car.options === 'string' ? car.options.split(',') : car.options;
+                optionsArray.forEach(opt => {
+                    if (opt && opt.trim() !== '') { 
+                        optionsList.innerHTML += `
+                            <div class="optional-card">
+                                <span class="check-badge">✓</span>
+                                <span>${opt.trim()}</span>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
+        // Link dinâmico do WhatsApp com mensagem personalizada
+        const btnWhatsapp = document.getElementById('detail-whatsapp');
+        if (btnWhatsapp && car.name) {
+            const message = encodeURIComponent(`Olá, tenho interesse no ${car.name}`);
+            btnWhatsapp.href = `https://wa.me/5521999999999?text=${message}`;
+        }
+
     } else {
-        // Se o cara tentar acessar uma URL com um ID que não existe (ou foi deletado)
         alert('Desculpe, este veículo não foi encontrado ou já foi vendido.');
-        window.location.href = '../index.html'; // Redireciona de volta para a Home
+        window.location.href = '../index.html';
     }
 });
