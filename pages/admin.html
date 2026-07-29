@@ -418,224 +418,225 @@
     <!-- SCRIPTS DO PAINEL ADMIN -->
     <script>
         // --- 1. MÁSCARAS E REGRAS DE INTERAÇÃO DOS INPUTS --- //
-        
-        // Máscara de Moeda (Preço)
-        function applyCurrencyMask(e) {
-            let value = e.target.value.replace(/\D/g, "");
-            if(value === "") { e.target.value = ""; return; }
-            value = (parseInt(value) / 100).toFixed(2);
-            e.target.value = "R$ " + value.replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-        }
-        document.getElementById('car-price').addEventListener('input', applyCurrencyMask);
-        document.getElementById('edit-price').addEventListener('input', applyCurrencyMask);
 
-        // Máscara de Quilometragem (Acrescenta "km")
-        function applyKmMask(e) {
-            let value = e.target.value.replace(/\D/g, "");
-            if(value) {
-                e.target.value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " km";
-            } else {
-                e.target.value = "";
+// Máscara de Moeda (Preço)
+function applyCurrencyMask(e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if(value === "") { e.target.value = ""; return; }
+    value = (parseInt(value) / 100).toFixed(2);
+    e.target.value = "R$ " + value.replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+}
+document.getElementById('car-price').addEventListener('input', applyCurrencyMask);
+document.getElementById('edit-price').addEventListener('input', applyCurrencyMask);
+
+// Máscara de Quilometragem (Acrescenta "km")
+function applyKmMask(e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if(value) {
+        e.target.value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " km";
+    } else {
+        e.target.value = "";
+    }
+}
+document.getElementById('car-km').addEventListener('input', applyKmMask);
+document.getElementById('edit-km').addEventListener('input', applyKmMask);
+
+// Máscara Ano
+function applyYearMask(e) {
+    let value = e.target.value.replace(/\D/g, ""); 
+    if (value.length > 8) value = value.substring(0, 8);
+    if (value.length > 4) {
+        e.target.value = value.substring(0, 4) + "/" + value.substring(4);
+    } else {
+        e.target.value = value;
+    }
+}
+document.getElementById('car-year').addEventListener('input', applyYearMask);
+document.getElementById('edit-year').addEventListener('input', applyYearMask);
+
+// Alternar trava do campo KM
+function toggleKmByCondition(conditionId, kmId) {
+    const condSelect = document.getElementById(conditionId);
+    const kmInput = document.getElementById(kmId);
+
+    if (condSelect.value === 'Novo') {
+        kmInput.value = '0 km';
+        kmInput.disabled = true;
+    } else {
+        if (kmInput.value === '0 km') kmInput.value = '';
+        kmInput.disabled = false;
+    }
+}
+document.getElementById('car-condition').addEventListener('change', () => toggleKmByCondition('car-condition', 'car-km'));
+document.getElementById('edit-condition').addEventListener('change', () => toggleKmByCondition('edit-condition', 'edit-km'));
+toggleKmByCondition('car-condition', 'car-km');
+
+
+// --- 2. UPLOAD DE FOTOS E PREVIEW --- //
+function previewImages(input, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    
+    if(input.files) {
+        Array.from(input.files).forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('img-preview');
+                if(index === 0) img.classList.add('capa');
+                
+                img.onclick = function() {
+                    document.querySelectorAll('#' + containerId + ' .img-preview').forEach(i => i.classList.remove('capa'));
+                    this.classList.add('capa');
+                };
+                container.appendChild(img);
             }
-        }
-        document.getElementById('car-km').addEventListener('input', applyKmMask);
-        document.getElementById('edit-km').addEventListener('input', applyKmMask);
-
-        // Máscara Ano (Insere a barra '/' automaticamente ao digitar o 5º dígito)
-        function applyYearMask(e) {
-            // Remove tudo que não for número
-            let value = e.target.value.replace(/\D/g, ""); 
-
-            // Limita ao máximo de 8 números (4 para o primeiro ano + 4 para o segundo)
-            if (value.length > 8) {
-                value = value.substring(0, 8);
-            }
-
-            // Se tiver mais de 4 dígitos, insere a barra automaticamente
-            if (value.length > 4) {
-                e.target.value = value.substring(0, 4) + "/" + value.substring(4);
-            } else {
-                e.target.value = value;
-            }
-        }
-        document.getElementById('car-year').addEventListener('input', applyYearMask);
-        document.getElementById('edit-year').addEventListener('input', applyYearMask);
-
-        // Alternar trava do campo KM com base na Condição (Novo / Seminovo)
-        function toggleKmByCondition(conditionId, kmId) {
-            const condSelect = document.getElementById(conditionId);
-            const kmInput = document.getElementById(kmId);
-
-            if (condSelect.value === 'Novo') {
-                kmInput.value = '0 km';
-                kmInput.disabled = true;
-            } else {
-                if (kmInput.value === '0 km') kmInput.value = '';
-                kmInput.disabled = false;
-            }
-        }
-
-        // Listeners para a trava de KM
-        document.getElementById('car-condition').addEventListener('change', () => toggleKmByCondition('car-condition', 'car-km'));
-        document.getElementById('edit-condition').addEventListener('change', () => toggleKmByCondition('edit-condition', 'edit-km'));
-
-        // Executa ao carregar para travar o campo do formulário de cadastro inicialmente
-        toggleKmByCondition('car-condition', 'car-km');
-
-
-        // --- 2. UPLOAD DE FOTOS E PREVIEW --- //
-        function previewImages(input, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            
-            if(input.files) {
-                Array.from(input.files).forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.classList.add('img-preview');
-                        if(index === 0) img.classList.add('capa');
-                        
-                        img.onclick = function() {
-                            document.querySelectorAll('#' + containerId + ' .img-preview').forEach(i => i.classList.remove('capa'));
-                            this.classList.add('capa');
-                        };
-                        container.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-
-        // --- 3. BANCO DE DADOS SIMULADO --- //
-        let inventory = [
-            { id: 1, name: 'Porsche 911 Carrera S', year: '2024', km: '0 km', price: 'R$ 980.000,00', condition: 'Novo', gear: 'Automático', fuel: 'Gasolina', options: 'Teto Solar, Sport Chrono', desc: 'Veículo em estado impecável.', img: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=150' },
-            { id: 2, name: 'BMW M4 Competition', year: '2023/2024', km: '12.500 km', price: 'R$ 650.000,00', condition: 'Seminovo', gear: 'Automático', fuel: 'Gasolina', options: 'Bancos Concha, Harman Kardon', desc: 'Revisões na concessionária.', img: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=150' }
-        ];
-
-        const listContainer = document.getElementById('inventory-list');
-
-        function renderInventory() {
-            listContainer.innerHTML = '';
-            if(inventory.length === 0) {
-                listContainer.innerHTML = '<p style="color: var(--text-gray);">Nenhum veículo cadastrado.</p>';
-                return;
-            }
-
-            inventory.forEach(car => {
-                const item = document.createElement('div');
-                item.className = 'car-list-item';
-                item.innerHTML = `
-                    <img src="${car.img}" alt="${car.name}">
-                    <div class="car-info-list">
-                        <h4>${car.name} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-gray);">(${car.year})</span></h4>
-                        <p>${car.price} • ${car.fuel}</p>
-                    </div>
-                    <div class="car-actions">
-                        <button class="btn-action btn-edit" onclick="openEditModal(${car.id})">Editar</button>
-                        <button class="btn-action btn-delete" onclick="deleteCar(${car.id})">Excluir</button>
-                    </div>
-                `;
-                listContainer.appendChild(item);
-            });
-        }
-
-        // Cadastrar Novo Carro
-        document.getElementById('form-add-car').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newCar = {
-                id: Date.now(),
-                name: document.getElementById('car-name').value,
-                year: document.getElementById('car-year').value,
-                km: document.getElementById('car-km').value,
-                price: document.getElementById('car-price').value,
-                condition: document.getElementById('car-condition').value,
-                gear: document.getElementById('car-gear').value,
-                fuel: document.getElementById('car-fuel').value,
-                options: document.getElementById('car-options').value,
-                desc: document.getElementById('car-desc').value,
-                img: document.querySelector('#preview-container .capa')?.src || 'https://images.unsplash.com/photo-1503376713210-9150ee8c4d32?w=150'
-            };
-            inventory.push(newCar);
-            renderInventory();
-            this.reset();
-            toggleKmByCondition('car-condition', 'car-km'); // Re-aplica a trava de 0 km
-            document.getElementById('preview-container').innerHTML = '';
-            alert('Veículo cadastrado com sucesso!');
+            reader.readAsDataURL(file);
         });
+    }
+}
 
-        // Deletar Veículo
-        function deleteCar(id) {
-            if(confirm('Tem certeza que deseja excluir este veículo?')) {
-                inventory = inventory.filter(car => car.id !== id);
-                renderInventory();
-            }
-        }
+// --- 3. BANCO DE DADOS SIMULADO (LOCALSTORAGE) --- //
 
-        // --- 4. LÓGICA DO MODAL DE EDIÇÃO --- //
-        const modal = document.getElementById('edit-modal');
-        
-        function openEditModal(id) {
-            const car = inventory.find(c => c.id === id);
-            if(car) {
-                document.getElementById('edit-id').value = car.id;
-                document.getElementById('edit-name').value = car.name;
-                document.getElementById('edit-condition').value = car.condition;
-                document.getElementById('edit-km').value = car.km;
-                document.getElementById('edit-year').value = car.year;
-                document.getElementById('edit-price').value = car.price;
-                document.getElementById('edit-gear').value = car.gear;
-                document.getElementById('edit-fuel').value = car.fuel || 'Flex';
-                document.getElementById('edit-options').value = car.options;
-                document.getElementById('edit-desc').value = car.desc;
-                
-                toggleKmByCondition('edit-condition', 'edit-km');
-                
-                document.getElementById('edit-preview-container').innerHTML = `
-                    <img src="${car.img}" class="img-preview capa">
-                `;
-                
-                modal.classList.add('active');
-            }
-        }
-        
-        function closeEditModal() {
-            modal.classList.remove('active');
-            document.getElementById('form-edit-car').reset();
-            document.getElementById('edit-preview-container').innerHTML = '';
-        }
+// 🔹 AQUI ESTÁ A MÁGICA: Ele tenta ler do navegador. Se não tiver nada, cria uma lista vazia.
+let inventory = JSON.parse(localStorage.getItem('amanhecer_inventory')) || [];
 
-        // Salvar Edição
-        document.getElementById('form-edit-car').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('edit-id').value);
-            const car = inventory.find(c => c.id === id);
-            
-            if(car) {
-                car.name = document.getElementById('edit-name').value;
-                car.condition = document.getElementById('edit-condition').value;
-                car.km = document.getElementById('edit-km').value;
-                car.year = document.getElementById('edit-year').value;
-                car.price = document.getElementById('edit-price').value;
-                car.gear = document.getElementById('edit-gear').value;
-                car.fuel = document.getElementById('edit-fuel').value;
-                car.options = document.getElementById('edit-options').value;
-                car.desc = document.getElementById('edit-desc').value;
-                
-                const newImg = document.querySelector('#edit-preview-container .capa')?.src;
-                if(newImg) {
-                    car.img = newImg;
-                }
+// Função auxiliar para salvar no navegador sempre que houver mudanças
+function salvarNoBanco() {
+    localStorage.setItem('amanhecer_inventory', JSON.stringify(inventory));
+}
 
-                renderInventory();
-                closeEditModal();
-                alert('Alterações salvas com sucesso!');
-            }
-        });
+const listContainer = document.getElementById('inventory-list');
 
-        // Inicializa a lista de estoque
+function renderInventory() {
+    listContainer.innerHTML = '';
+    if(inventory.length === 0) {
+        listContainer.innerHTML = '<p style="color: var(--text-gray);">Nenhum veículo cadastrado no momento.</p>';
+        return;
+    }
+
+    inventory.forEach(car => {
+        const item = document.createElement('div');
+        item.className = 'car-list-item';
+        item.innerHTML = `
+            <img src="${car.img}" alt="${car.name}">
+            <div class="car-info-list">
+                <h4>${car.name} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-gray);">(${car.year})</span></h4>
+                <p>${car.price} • ${car.fuel}</p>
+            </div>
+            <div class="car-actions">
+                <button class="btn-action btn-edit" onclick="openEditModal(${car.id})">Editar</button>
+                <button class="btn-action btn-delete" onclick="deleteCar(${car.id})">Excluir</button>
+            </div>
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+// Cadastrar Novo Carro
+document.getElementById('form-add-car').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newCar = {
+        id: Date.now(),
+        name: document.getElementById('car-name').value,
+        year: document.getElementById('car-year').value,
+        km: document.getElementById('car-km').value,
+        price: document.getElementById('car-price').value,
+        condition: document.getElementById('car-condition').value,
+        gear: document.getElementById('car-gear').value,
+        fuel: document.getElementById('car-fuel').value,
+        options: document.getElementById('car-options').value,
+        desc: document.getElementById('car-desc').value,
+        img: document.querySelector('#preview-container .capa')?.src || 'https://images.unsplash.com/photo-1503376713210-9150ee8c4d32?w=150'
+    };
+    
+    // Adiciona o carro na lista e salva no banco do navegador!
+    inventory.unshift(newCar); // unshift coloca o carro mais novo no topo da lista
+    salvarNoBanco();
+    
+    renderInventory();
+    this.reset();
+    toggleKmByCondition('car-condition', 'car-km');
+    document.getElementById('preview-container').innerHTML = '';
+    alert('Veículo cadastrado com sucesso!');
+});
+
+// Deletar Veículo
+function deleteCar(id) {
+    if(confirm('Tem certeza que deseja excluir este veículo? Isso refletirá na página inicial.')) {
+        inventory = inventory.filter(car => car.id !== id);
+        salvarNoBanco(); // Salva a lista atualizada (sem o carro) no navegador
         renderInventory();
+    }
+}
+
+// --- 4. LÓGICA DO MODAL DE EDIÇÃO --- //
+const modal = document.getElementById('edit-modal');
+
+function openEditModal(id) {
+    const car = inventory.find(c => c.id === id);
+    if(car) {
+        document.getElementById('edit-id').value = car.id;
+        document.getElementById('edit-name').value = car.name;
+        document.getElementById('edit-condition').value = car.condition;
+        document.getElementById('edit-km').value = car.km;
+        document.getElementById('edit-year').value = car.year;
+        document.getElementById('edit-price').value = car.price;
+        document.getElementById('edit-gear').value = car.gear;
+        document.getElementById('edit-fuel').value = car.fuel || 'Flex';
+        document.getElementById('edit-options').value = car.options || '';
+        document.getElementById('edit-desc').value = car.desc || '';
+        
+        toggleKmByCondition('edit-condition', 'edit-km');
+        
+        document.getElementById('edit-preview-container').innerHTML = `
+            <img src="${car.img}" class="img-preview capa">
+        `;
+        
+        modal.classList.add('active');
+    }
+}
+
+function closeEditModal() {
+    modal.classList.remove('active');
+    document.getElementById('form-edit-car').reset();
+    document.getElementById('edit-preview-container').innerHTML = '';
+}
+
+// Salvar Edição
+document.getElementById('form-edit-car').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const id = parseInt(document.getElementById('edit-id').value);
+    const car = inventory.find(c => c.id === id);
+    
+    if(car) {
+        car.name = document.getElementById('edit-name').value;
+        car.condition = document.getElementById('edit-condition').value;
+        car.km = document.getElementById('edit-km').value;
+        car.year = document.getElementById('edit-year').value;
+        car.price = document.getElementById('edit-price').value;
+        car.gear = document.getElementById('edit-gear').value;
+        car.fuel = document.getElementById('edit-fuel').value;
+        car.options = document.getElementById('edit-options').value;
+        car.desc = document.getElementById('edit-desc').value;
+        
+        const newImg = document.querySelector('#edit-preview-container .capa')?.src;
+        if(newImg) {
+            car.img = newImg;
+        }
+
+        // Salva as edições no banco do navegador
+        salvarNoBanco();
+        
+        renderInventory();
+        closeEditModal();
+        alert('Alterações salvas com sucesso!');
+    }
+});
+
+// Inicializa a lista de estoque
+renderInventory();
     </script>
     
     <!-- Script Principal -->
