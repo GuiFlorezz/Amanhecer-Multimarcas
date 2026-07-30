@@ -31,9 +31,13 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 40px;
+            align-items: start; /* Impede que um card estique o outro */
         }
         @media (min-width: 992px) {
-            .admin-grid { grid-template-columns: 1fr 1fr; }
+            .admin-grid { 
+                grid-template-columns: 1fr 1fr; 
+                align-items: start;
+            }
         }
 
         .admin-card {
@@ -42,12 +46,38 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
         }
         .admin-card h3 {
             margin-bottom: 25px;
             font-size: 1.3rem;
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
+        }
+
+        /* TRAVA A ALTURA E ATIVA O SCROLL INTERNO */
+        #inventory-list {
+            max-height: calc(100vh - 280px); /* Ajusta dinamicamente à altura da tela */
+            min-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* BARRA DE ROLAGEM DOURADA PERSONALIZADA */
+        #inventory-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #inventory-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        #inventory-list::-webkit-scrollbar-thumb {
+            background: var(--gold, #d4af37);
+            border-radius: 4px;
+        }
+        #inventory-list::-webkit-scrollbar-thumb:hover {
+            background: #b89528;
         }
 
         .form-grid {
@@ -306,7 +336,6 @@
                             <input type="text" id="car-price" placeholder="R$ 0,00" required>
                         </div>
                         
-                        <!-- NOVO CAMPO: MOTOR -->
                         <div class="form-group">
                             <label>Motor</label>
                             <input type="text" id="car-motor" placeholder="Ex: 3.0 V6 Bi-Turbo" required>
@@ -331,7 +360,6 @@
                             </select>
                         </div>
                         
-                        <!-- NOVO CAMPO: COR PARA BALANCEAR O LAYOUT -->
                         <div class="form-group">
                             <label>Cor</label>
                             <input type="text" id="car-color" placeholder="Ex: Preto, Branco, Prata..." required>
@@ -410,7 +438,6 @@
                         <input type="text" id="edit-price" required>
                     </div>
                     
-                    <!-- NOVO CAMPO EDIÇÃO: MOTOR -->
                     <div class="form-group">
                         <label>Motor</label>
                         <input type="text" id="edit-motor" required>
@@ -435,7 +462,6 @@
                         </select>
                     </div>
 
-                    <!-- NOVO CAMPO DE EDIÇÃO: COR -->
                     <div class="form-group">
                         <label>Cor</label>
                         <input type="text" id="edit-color" required>
@@ -660,7 +686,6 @@
             inventory.forEach(car => {
                 const item = document.createElement('div');
                 item.className = 'car-list-item';
-                // ATUALIZADO AQUI: Cor e Motor com tratamento para undefined
                 item.innerHTML = `
                     <img src="${car.img}" alt="${car.name}">
                     <div class="car-info-list">
@@ -692,7 +717,7 @@
                 km: document.getElementById('car-km').value,
                 price: document.getElementById('car-price').value,
                 motor: document.getElementById('car-motor').value, 
-                color: document.getElementById('car-color').value, // ATUALIZADO AQUI
+                color: document.getElementById('car-color').value,
                 condition: document.getElementById('car-condition').value,
                 gear: document.getElementById('car-gear').value,
                 fuel: document.getElementById('car-fuel').value,
@@ -735,7 +760,7 @@
                 document.getElementById('edit-year').value = car.year;
                 document.getElementById('edit-price').value = car.price;
                 document.getElementById('edit-motor').value = car.motor || ''; 
-                document.getElementById('edit-color').value = car.color || ''; // ATUALIZADO AQUI
+                document.getElementById('edit-color').value = car.color || '';
                 document.getElementById('edit-gear').value = car.gear;
                 document.getElementById('edit-fuel').value = car.fuel || 'Flex';
                 document.getElementById('edit-options').value = car.options || '';
@@ -776,7 +801,7 @@
                 car.year = document.getElementById('edit-year').value;
                 car.price = document.getElementById('edit-price').value;
                 car.motor = document.getElementById('edit-motor').value;
-                car.color = document.getElementById('edit-color').value; // ATUALIZADO AQUI
+                car.color = document.getElementById('edit-color').value;
                 car.gear = document.getElementById('edit-gear').value;
                 car.fuel = document.getElementById('edit-fuel').value;
                 car.options = document.getElementById('edit-options').value;
