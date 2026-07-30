@@ -132,7 +132,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none; /* Garante que o arrasto funcione de forma uniforme */
+            pointer-events: none;
         }
         .capa-badge {
             position: absolute;
@@ -148,7 +148,7 @@
             z-index: 2;
         }
 
-        /* Overlay do Botão de Exclusão (Surgiu com Duplo Clique) */
+        /* Overlay do Botão de Exclusão */
         .delete-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -305,6 +305,12 @@
                             <label>Preço</label>
                             <input type="text" id="car-price" placeholder="R$ 0,00" required>
                         </div>
+                        
+                        <!-- NOVO CAMPO: MOTOR -->
+                        <div class="form-group">
+                            <label>Motor</label>
+                            <input type="text" id="car-motor" placeholder="Ex: 3.0 V6 Bi-Turbo" required>
+                        </div>
 
                         <div class="form-group">
                             <label>Câmbio</label>
@@ -323,6 +329,12 @@
                                 <option value="Diesel">Diesel</option>
                                 <option value="Híbrido">Híbrido</option>
                             </select>
+                        </div>
+                        
+                        <!-- NOVO CAMPO: COR PARA BALANCEAR O LAYOUT -->
+                        <div class="form-group">
+                            <label>Cor</label>
+                            <input type="text" id="car-color" placeholder="Ex: Preto, Branco, Prata..." required>
                         </div>
 
                         <div class="form-group full-width">
@@ -397,6 +409,12 @@
                         <label>Preço</label>
                         <input type="text" id="edit-price" required>
                     </div>
+                    
+                    <!-- NOVO CAMPO EDIÇÃO: MOTOR -->
+                    <div class="form-group">
+                        <label>Motor</label>
+                        <input type="text" id="edit-motor" required>
+                    </div>
 
                     <div class="form-group">
                         <label>Câmbio</label>
@@ -415,6 +433,12 @@
                             <option value="Diesel">Diesel</option>
                             <option value="Híbrido">Híbrido</option>
                         </select>
+                    </div>
+
+                    <!-- NOVO CAMPO DE EDIÇÃO: COR -->
+                    <div class="form-group">
+                        <label>Cor</label>
+                        <input type="text" id="edit-color" required>
                     </div>
 
                     <div class="form-group full-width">
@@ -529,13 +553,13 @@
                 card.className = `img-card-preview ${index === 0 ? 'is-capa' : ''}`;
                 card.draggable = true;
 
-                // Eventos de Drag & Drop (Arrastar e Soltar)
+                // Eventos de Drag & Drop
                 card.ondragstart = (e) => handleDragStart(e, index);
                 card.ondragover = (e) => handleDragOver(e);
                 card.ondrop = (e) => handleDrop(e, index, mode);
                 card.ondragend = (e) => handleDragEnd(e);
 
-                // Evento de Duplo Clique para solicitar exclusão
+                // Evento de Duplo Clique
                 card.ondblclick = (e) => {
                     e.stopPropagation();
                     activeDeleteState = { mode, index };
@@ -547,7 +571,6 @@
                     <img src="${src}" alt="Foto ${index + 1}">
                 `;
 
-                // Se este card foi clicado duas vezes, mostra a overlay com o X vermelho
                 if (activeDeleteState.mode === mode && activeDeleteState.index === index) {
                     cardHTML += `
                         <div class="delete-overlay">
@@ -561,7 +584,6 @@
             });
         }
 
-        // Funções de suporte para Drag and Drop
         function handleDragStart(e, index) {
             dragSrcIndex = index;
             e.target.classList.add('dragging');
@@ -581,7 +603,6 @@
                 const [movedItem] = list.splice(dragSrcIndex, 1);
                 list.splice(targetIndex, 0, movedItem);
                 
-                // Reseta estado de exclusão ao arrastar
                 cancelDeleteState();
                 renderImagePreviews(mode);
             }
@@ -593,7 +614,6 @@
             dragSrcIndex = null;
         }
 
-        // Confirmar Exclusão (Clicando no X Vermelho)
         function confirmDeleteImage(e, index, mode) {
             e.stopPropagation();
             const list = mode === 'add' ? addCarImages : editCarImages;
@@ -602,7 +622,6 @@
             renderImagePreviews(mode);
         }
 
-        // Cancelar Exclusão (Ao clicar fora de uma foto)
         function cancelDeleteState() {
             if (activeDeleteState.index !== null) {
                 activeDeleteState = { mode: null, index: null };
@@ -611,7 +630,6 @@
             }
         }
 
-        // Listener Global: Se clicar em qualquer área fora de uma foto selecionada, o X fecha
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.img-card-preview')) {
                 cancelDeleteState();
@@ -642,11 +660,12 @@
             inventory.forEach(car => {
                 const item = document.createElement('div');
                 item.className = 'car-list-item';
+                // ATUALIZADO AQUI: Cor e Motor com tratamento para undefined
                 item.innerHTML = `
                     <img src="${car.img}" alt="${car.name}">
                     <div class="car-info-list">
                         <h4>${car.name} <span style="font-size: 0.8rem; color: var(--text-gray);">(${car.year})</span></h4>
-                        <p>${car.price} • ${car.fuel}</p>
+                        <p>${car.price} • ${car.fuel} • ${car.color || 'Cor não informada'} • Motor ${car.motor || 'Não informado'}</p>
                     </div>
                     <div class="car-actions">
                         <button class="btn-action btn-edit" onclick="openEditModal(${car.id})">Editar</button>
@@ -672,12 +691,14 @@
                 year: document.getElementById('car-year').value,
                 km: document.getElementById('car-km').value,
                 price: document.getElementById('car-price').value,
+                motor: document.getElementById('car-motor').value, 
+                color: document.getElementById('car-color').value, // ATUALIZADO AQUI
                 condition: document.getElementById('car-condition').value,
                 gear: document.getElementById('car-gear').value,
                 fuel: document.getElementById('car-fuel').value,
                 options: document.getElementById('car-options').value,
                 desc: document.getElementById('car-desc').value,
-                img: addCarImages[0], // Primeira foto da lista reordenada é a Capa
+                img: addCarImages[0], 
                 images: [...addCarImages]
             };
             
@@ -713,6 +734,8 @@
                 document.getElementById('edit-km').value = car.km;
                 document.getElementById('edit-year').value = car.year;
                 document.getElementById('edit-price').value = car.price;
+                document.getElementById('edit-motor').value = car.motor || ''; 
+                document.getElementById('edit-color').value = car.color || ''; // ATUALIZADO AQUI
                 document.getElementById('edit-gear').value = car.gear;
                 document.getElementById('edit-fuel').value = car.fuel || 'Flex';
                 document.getElementById('edit-options').value = car.options || '';
@@ -752,13 +775,15 @@
                 car.km = document.getElementById('edit-km').value;
                 car.year = document.getElementById('edit-year').value;
                 car.price = document.getElementById('edit-price').value;
+                car.motor = document.getElementById('edit-motor').value;
+                car.color = document.getElementById('edit-color').value; // ATUALIZADO AQUI
                 car.gear = document.getElementById('edit-gear').value;
                 car.fuel = document.getElementById('edit-fuel').value;
                 car.options = document.getElementById('edit-options').value;
                 car.desc = document.getElementById('edit-desc').value;
                 
                 car.images = [...editCarImages];
-                car.img = editCarImages[0]; // Capa atualizada
+                car.img = editCarImages[0];
 
                 salvarNoBanco();
                 renderInventory();
@@ -771,7 +796,5 @@
         toggleKmByCondition('car-condition', 'car-km');
         renderInventory();
     </script>
-    
-    <script src="../script.js"></script>
 </body>
 </html>

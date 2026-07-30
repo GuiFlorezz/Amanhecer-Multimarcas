@@ -92,6 +92,8 @@ const renderCars = (carArray) => {
                         <span>🛣️ ${car.km}</span>
                         <span>⛽ ${car.fuel}</span>
                         <span>⚙️ ${car.gear}</span>
+                        <span>🔧 ${car.motor || '--'}</span>
+                        <span>🎨 ${car.color || '--'}</span>
                     </div>
                     <a href="pages/detalhes.html?id=${car.id}" class="btn btn-outline" style="width: 100%; border-color: var(--border); display: block; text-align: center; margin-top: 15px;">Ver Detalhes</a>
                 </div>
@@ -253,7 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setContent('detail-fuel', car.fuel);
         setContent('detail-desc', car.desc);
         setContent('detail-condition', car.condition || 'Exclusivo');
-
+                // NOVAS LINHAS AQUI:
+        setContent('detail-motor', car.motor);
+        setContent('detail-color', car.color);
         // --- SUPORTE COMPLETO PARA MULTI-IMAGENS ---
         let imageList = [];
         const rawImages = car.images || car.fotos || car.galeria || car.img;
